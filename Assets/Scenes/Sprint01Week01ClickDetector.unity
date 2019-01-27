@@ -130,7 +130,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &271669473
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -351,6 +351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1152278404}
+  - component: {fileID: 1152278406}
   - component: {fileID: 1152278405}
   m_Layer: 0
   m_Name: Click Detector
@@ -378,17 +379,25 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1152278403}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d1d48e67d0b2ef49ab43df836b68e88, type: 3}
+  m_Script: {fileID: 11500000, guid: eced848bb4f2fff40b83bed352285730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   clickMask:
     serializedVersion: 2
     m_Bits: 0
-  UIMask:
-    serializedVersion: 2
-    m_Bits: 0
+--- !u!114 &1152278406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1152278403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d1d48e67d0b2ef49ab43df836b68e88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2012598410
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,12 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ClickPositionManager_01ScreenToWorldPoint: MonoBehaviour {
 
-    public LayerMask clickMask, UIMask;
-	
 	void Update ()
     {
 		if(Input.GetMouseButtonDown(0) || Input.GetMouseButton(1))
