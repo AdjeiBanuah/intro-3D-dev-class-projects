@@ -353,6 +353,7 @@ GameObject:
   - component: {fileID: 1152278404}
   - component: {fileID: 1152278406}
   - component: {fileID: 1152278405}
+  - component: {fileID: 1152278407}
   m_Layer: 0
   m_Name: Click Detector
   m_TagString: Untagged
@@ -393,9 +394,20 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1152278403}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d1d48e67d0b2ef49ab43df836b68e88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1152278407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1152278403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ec837ef650e7b4cadb32397b5f4450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2012598410
