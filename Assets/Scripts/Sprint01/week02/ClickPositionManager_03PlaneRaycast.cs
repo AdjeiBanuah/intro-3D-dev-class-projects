@@ -22,7 +22,7 @@ public class ClickPositionManager_03PlaneRaycast : MonoBehaviour {
             Vector3 clickPosition = -Vector3.one;
 
             //method 3: Raycast using Plane
-            Plane plane = new Plane(Vector3.up, 0f);
+            Plane plane = new Plane(Vector3.forward, 0f);
             //Plane plane = new Plane(Vector3.forward, 0f);
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             float distanceToPlane;

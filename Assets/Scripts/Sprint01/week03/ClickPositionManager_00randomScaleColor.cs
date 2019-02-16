@@ -31,10 +31,10 @@ public class ClickPositionManager_00randomScaleColor : MonoBehaviour
             Debug.Log(clickPosition);
             primitive = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             //randomizing colors and scale
-            //primitive.transform.localScale = new Vector3(Random.Range(0.1f, 1f), Random.Range(0.1f, 1f), Random.Range(0.1f, 1f));
+            primitive.transform.localScale = new Vector3(Random.Range(0.1f, 1f), Random.Range(0.1f, 1f), Random.Range(0.1f, 1f));
             primitive.transform.position = clickPosition;
-            //primitive.GetComponent<Renderer>().material.color = new Vector4(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
-            //Destroy(primitive, 3f);
+            primitive.GetComponent<Renderer>().material.color = new Vector4(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+            Destroy(primitive, 3f);
         }
 	}
 }

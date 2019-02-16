@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/Sprint01Week02ClickDetector.unity
+    guid: 5c3a6f4f1f91a0b40aa5bc787f074bee
   - enabled: 1
-    path: Assets/Scenes/Sprint1Project.unity
+    path: Assets/Scenes/Sprint01Project.unity
     guid: 240d933a7691e444d998b1e2dca6a4bc
   m_configObjects: {}

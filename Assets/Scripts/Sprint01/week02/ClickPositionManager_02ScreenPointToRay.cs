@@ -24,23 +24,26 @@ public class ClickPositionManager_02ScreenPointToRay : MonoBehaviour {
             //create a raycasthit but its automatically populated from where the ray will hit a collider
             RaycastHit hit; //dont have to assign this as the raycast will assign this procedurally
 
+            /*
             if(Physics.Raycast(ray, out hit)) //export out the information to hit
             {
                 clickPosition = hit.point;
                 GameObject primitive = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 primitive.transform.position = clickPosition;
             }
+            */
 
-            /*
+            
             if (Physics.Raycast(ray, out hit, 100f, clickMask)) //need to add max distance, and layerMask
             {
                 //hit has alot of information about the raycast collision on both sides
                 clickPosition = hit.point;
-
+                GameObject primitive = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                primitive.transform.position = clickPosition;
                 //but it hits everything which is a problem as the spheres populate more
                 //so add physics layers and update the Raycast method call
             }
-            */
+            
 
             //print out the position and spawn a sphere
             Debug.Log(clickPosition);

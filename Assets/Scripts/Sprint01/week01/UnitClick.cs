@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitClick : MonoBehaviour {
-
+public class UnitClick : MonoBehaviour
+{
     private void OnMouseDown()
     {
-        Debug.Log(name + " was clicked, only world position returned is " + transform.position);
+        Debug.Log(this.gameObject.name + " was clicked, only world position returned is " + this.gameObject.transform.position);
     }
 }
