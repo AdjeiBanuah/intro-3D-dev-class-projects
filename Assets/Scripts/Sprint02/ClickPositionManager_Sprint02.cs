@@ -9,7 +9,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
     private int shape = 0;
     private GameObject primitive;
     private float red = .8f, green = .8f, blue = .8f, destroyTime = 3f;
-    public Text mousePosition;
+    public Text mousePosition, blueAmount, redAmount, greenAmount;
 
     [SerializeField]
     private float distance = 5f, distanceChange;
@@ -91,27 +91,27 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         mousePosition.text = "Mouse Position x: " + Input.mousePosition.x.ToString("F0") + ", y: " + Input.mousePosition.y.ToString("F0");
     }
 
-    public void changeShape(int tempShape)
+    public void ChangeShape(int tempShape)
     {
         shape = tempShape;
     }
 
-    public void changeRed(float tempRed)
+    public void ChangeRed(float tempRed)
     {
         red = tempRed;
     }
 
-    public void changeGreen(float tempGreen)
+    public void ChangeGreen(float tempGreen)
     {
         green = tempGreen;
     }
 
-    public void changeBlue(float tempBlue)
+    public void ChangeBlue(float tempBlue)
     {
         blue = tempBlue;
     }
 
-    public void destroyObjects()
+    public void DestroyObjects()
     {
         foreach (Transform child in transform)
         {
