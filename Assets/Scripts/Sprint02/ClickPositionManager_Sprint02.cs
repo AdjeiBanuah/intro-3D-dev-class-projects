@@ -8,8 +8,8 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
 
     private int shape = 0;
     private GameObject primitive;
-    private float red = .8f, green = .8f, blue = .8f, destroyTime = 3f;
-    public Text mousePosition, blueAmount, redAmount, greenAmount;
+    private float red = .8f, green = .8f, blue = .8f, destroyTime = 3f, timeToDestroy = 3f;
+    public Text mousePosition, blueAmount, redAmount, greenAmount, sizeAmount, timerAmount;
 
     [SerializeField]
     private float distance = 5f, distanceChange;
@@ -83,7 +83,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             primitive.transform.parent = this.transform;
             if(timedDestroyIsOn)
             {
-                Destroy(primitive, 3f);
+                Destroy(primitive, timeToDestroy);
             }
             lastClickPosition = clickPosition;
 
@@ -94,21 +94,25 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
     public void ChangeShape(int tempShape)
     {
         shape = tempShape;
+        
     }
 
     public void ChangeRed(float tempRed)
     {
         red = tempRed;
+        redAmount.text = (red * 100f).ToString("F0");
     }
 
     public void ChangeGreen(float tempGreen)
     {
         green = tempGreen;
+        greenAmount.text = (green * 100f).ToString("F0");
     }
 
     public void ChangeBlue(float tempBlue)
     {
         blue = tempBlue;
+        blueAmount.text = (blue * 100f).ToString("F0");
     }
 
     public void DestroyObjects()
@@ -121,11 +125,17 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
 
     public void ToggleTimedDestroy(bool timer)
     {
-            timedDestroyIsOn = timer;
+        timedDestroyIsOn = timer;
     }
 
     public void ChangeSize(float temp)
     {
         size = temp;
+    }
+
+    public void ChangeTimeToDestroy(float temp)
+    {
+        timeToDestroy = temp;
+        timerAmount.text = timeToDestroy.ToString("F0") + " Sec";
     }
 }
