@@ -21,10 +21,15 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
     private Vector3 lastClickPosition = Vector3.zero;
     public Text lifeTime;
 
+    public GameObject paintedObject01;
+    private Color paintedObjectColor, paintedObjectEmission;
+
+    public Clock clock;
+
     void Update ()
     {
 
-        if (Input.GetMouseButtonDown(0) || Input.GetMouseButton(0)) //left click or hold
+        if (Input.GetMouseButtonDown(0)) //left click
         {
             //checking for an colliders out in the virtual world that my mousePosition 
             //is over when the user left clicks or holds
@@ -33,12 +38,32 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit)) //export out the information to hit
             {
-                Destroy(hit.transform.gameObject);
+                if(hit.transform.gameObject.layer == 11) //Clockface
+                {
+                    hit.transform.parent.GetComponent<Clock>().UpdateTime(hit.transform.localEulerAngles.y);
+                    Debug.Log(hit.transform.rotation.ToString());
+                }
+            }
+        }
+
+        if (Input.GetMouseButton(0)) //left hold
+        {
+            //checking for an colliders out in the virtual world that my mousePosition 
+            //is over when the user left clicks or holds
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit; //dont have to assign this as the raycast will assign this procedurally
+
+            if (Physics.Raycast(ray, out hit)) //export out the information to hit
+            {
+                if (hit.transform.gameObject.layer == 12) //PaintedObject
+                {
+                    Destroy(hit.transform.gameObject);
+                }
                 //this destroys the paint object, but we can modify it, scale it, recolor it, etc
             }
         }
 
-        if(Input.GetMouseButtonUp(1)) //user released right mouse button so reset lastPosition to avoid large spawns at next paint drop
+        if (Input.GetMouseButtonUp(1)) //user released right mouse button so reset lastPosition to avoid large spawns at next paint drop
         {
             lastClickPosition = Vector3.zero;
         }
@@ -50,7 +75,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             switch (shape)
             {
                 case 0:
-                    primitive = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    primitive = Instantiate(paintedObject01, clickPosition, Quaternion.identity);
                     break;
 
                 case 1:
@@ -78,8 +103,12 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 primitive.transform.localScale = new Vector3(x, y, z);
             }
             //randomizing colors and scale
-            primitive.transform.position = clickPosition;
-            primitive.GetComponent<Renderer>().material.color = new Vector4(Random.Range(0.2f, red), Random.Range(0.2f, green), Random.Range(0.2f, blue), 1f);
+            //primitive.transform.position = clickPosition;
+            paintedObjectColor = new Color(Random.Range(0.0f, red), Random.Range(0.0f, green), Random.Range(0.0f, blue), 0.5f);
+            primitive.GetComponent<Renderer>().material.color = paintedObjectColor;
+            paintedObjectEmission = new Color(paintedObjectColor.r / 2f, paintedObjectColor.g / 2f, paintedObjectColor.b / 2f);
+            primitive.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
+
             primitive.transform.parent = this.transform;
             if(timedDestroyIsOn)
             {
