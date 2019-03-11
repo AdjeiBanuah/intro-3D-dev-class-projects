@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class ClickPositionManager_Sprint02 : MonoBehaviour
 {
@@ -21,10 +22,14 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
     private Vector3 lastClickPosition = Vector3.zero;
     public Text lifeTime;
 
-    public GameObject paintedObject01;
+    public GameObject paintedObject00, paintedObject01, paintedObject02;
     private Color paintedObjectColor, paintedObjectEmission;
 
-    public Clock clock;
+    [SerializeField]
+    [Range(0.0f, 2f)]
+    private float emissionStrength = 0.5f;
+
+    private float opacityStrength = 0.5f;
 
     void Update ()
     {
@@ -41,12 +46,17 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 if(hit.transform.gameObject.layer == 11) //Clockface
                 {
                     hit.transform.parent.GetComponent<Clock>().UpdateTime(hit.transform.localEulerAngles.y);
-                    Debug.Log(hit.transform.rotation.ToString());
+                    //Debug.Log(hit.transform.rotation.ToString());
                 }
             }
         }
 
-        if (Input.GetMouseButton(0)) //left hold
+        //NEW
+        //Debug.Log(EventSystem.current.currentSelectedGameObject.ToString());
+        Debug.Log((EventSystem.current.currentSelectedGameObject == null));
+
+        //NEW if check
+        if (Input.GetMouseButton(0) && (EventSystem.current.currentSelectedGameObject == null)) //left hold
         {
             //checking for an colliders out in the virtual world that my mousePosition 
             //is over when the user left clicks or holds
@@ -75,15 +85,17 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             switch (shape)
             {
                 case 0:
-                    primitive = Instantiate(paintedObject01, clickPosition, Quaternion.identity);
+                    primitive = Instantiate(paintedObject00, clickPosition, Quaternion.identity);
                     break;
 
                 case 1:
-                    primitive = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    //primitive = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    primitive = Instantiate(paintedObject01, clickPosition, Quaternion.identity);
                     break;
 
                 case 2:
-                    primitive = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                    //primitive = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                    primitive = Instantiate(paintedObject02, clickPosition, Quaternion.identity);
                     break;
 
                 default:
@@ -96,17 +108,17 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             if (lastClickPosition == Vector3.zero) primitive.transform.localScale = new Vector3(Random.Range(0.1f, 1f)*size, Random.Range(0.1f, 1f)*size, Random.Range(0.1f, 1f)*size);
             else
             {
-                //float x = Mathf.Clamp(Random.Range(0.5f, 3f) * Mathf.Abs(lastClickPosition.x - clickPosition.x), .1f, 5f);
-                float x = Mathf.Clamp(Random.Range(0.5f, 3f) * Mathf.Abs(lastClickPosition.x - clickPosition.x), .1f, 5f);
-                float y = Mathf.Clamp(Random.Range(0.5f, 3f) * (Mathf.Abs(lastClickPosition.y - clickPosition.y)), .2f, 5f);
+                //NEW
+                float x = Mathf.Clamp(Random.Range(size, size * 6f) * Mathf.Abs(lastClickPosition.x - clickPosition.x), .1f, size * 10f);
+                float y = Mathf.Clamp(Random.Range(size, size * 6f) * Mathf.Abs(lastClickPosition.y - clickPosition.y), .1f, size * 10f);
                 float z = (x + y) / 2f;
                 primitive.transform.localScale = new Vector3(x, y, z);
             }
             //randomizing colors and scale
             //primitive.transform.position = clickPosition;
-            paintedObjectColor = new Color(Random.Range(0.0f, red), Random.Range(0.0f, green), Random.Range(0.0f, blue), 0.5f);
+            paintedObjectColor = new Color(Random.Range(0.0f, red), Random.Range(0.0f, green), Random.Range(0.0f, blue), opacityStrength);
             primitive.GetComponent<Renderer>().material.color = paintedObjectColor;
-            paintedObjectEmission = new Color(paintedObjectColor.r / 2f, paintedObjectColor.g / 2f, paintedObjectColor.b / 2f);
+            paintedObjectEmission = new Color(paintedObjectColor.r * emissionStrength, paintedObjectColor.g * emissionStrength, paintedObjectColor.b * emissionStrength);
             primitive.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
 
             primitive.transform.parent = this.transform;
@@ -157,9 +169,38 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         timedDestroyIsOn = timer;
     }
 
+    //NEW
     public void ChangeSize(float temp)
     {
+        foreach (Transform child in transform)
+        {
+            child.localScale = child.localScale * temp / size;
+        }
         size = temp;
+    }
+
+    //NEW
+    public void ChangeEmissionStrength(float temp)
+    {
+        foreach (Transform child in transform)
+        {
+            paintedObjectColor = child.GetComponent<Renderer>().material.GetColor("_Color");
+            paintedObjectEmission = new Color(paintedObjectColor.r * temp, paintedObjectColor.g * temp, paintedObjectColor.b * temp);
+            child.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
+        }
+        emissionStrength = temp;
+    }
+
+    //NEW
+    public void ChangeOpacityStrength(float temp)
+    {
+        foreach (Transform child in transform)
+        {
+            paintedObjectColor = child.GetComponent<Renderer>().material.GetColor("_Color");
+            paintedObjectColor.a = temp;
+            child.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
+        }
+        opacityStrength = temp;
     }
 
     public void ChangeTimeToDestroy(float temp)

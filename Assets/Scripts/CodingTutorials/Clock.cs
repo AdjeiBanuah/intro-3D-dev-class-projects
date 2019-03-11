@@ -20,7 +20,7 @@ public class Clock : MonoBehaviour
     //[Range(0,23)]
     //public int hours;
 
-    private float hours, minutes, userSetHour, partialHourOffset, hoursTemp;
+    private float hours, minutes, hoursTemp;
 
     //update hours to float and dayCycle.localRotation to continuous time
     //update non-realtime to change clock as well
@@ -58,11 +58,11 @@ public class Clock : MonoBehaviour
     private void Update()
     {
         timeContinuous = DateTime.Now.TimeOfDay;
-        //hours = (float)timeContinuous.TotalHours;
+        //hours = (float)timeContinuous.TotalHours; //commented out for UpdateAMPM
         minutes = (float)timeContinuous.TotalMinutes;
         
         minutesTransform.localRotation = Quaternion.Euler(0f, minutes * degreesPerMinute, 0f);
-        Debug.Log(hours);
+        //Debug.Log(hours);
         hoursTransform.localRotation = Quaternion.Euler(0f, hours * degreesPerHour, 0f);
         dayCycle.localRotation = Quaternion.Euler(hours * degreesPerDayCycle, 0f, 0f); //divide by two because its 24 hrs per rotation not 12 hrs
 
@@ -88,7 +88,7 @@ public class Clock : MonoBehaviour
         secondsTransform.localRotation = Quaternion.Euler(0f, timeDiscrete.Second * degreesPerSecond, 0f);
     }
 
-    public void UpdateTime(float clickedHourRotation)
+    public void UpdateTime(float clickedHourRotation) //click on an hour indicator
     {
         //if (clickedHourRotation < 0) clickedHourRotation += 360;
         //realTime = false;
