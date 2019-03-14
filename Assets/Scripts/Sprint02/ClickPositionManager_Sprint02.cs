@@ -22,7 +22,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
     private Vector3 lastClickPosition = Vector3.zero;
     public Text lifeTime;
 
-    public GameObject paintedObject00, paintedObject01, paintedObject02;
+    public GameObject paintedObject00, paintedObject01, paintedObject02, explosion;
     private Color paintedObjectColor, paintedObjectEmission;
 
     [SerializeField]
@@ -56,7 +56,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         Debug.Log((EventSystem.current.currentSelectedGameObject == null));
 
         //NEW if check
-        if (Input.GetMouseButton(0) && (EventSystem.current.currentSelectedGameObject == null)) //left hold
+        if (Input.GetMouseButton(1) && (EventSystem.current.currentSelectedGameObject == null)) //right hold
         {
             //checking for an colliders out in the virtual world that my mousePosition 
             //is over when the user left clicks or holds
@@ -68,17 +68,19 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 if (hit.transform.gameObject.layer == 12) //PaintedObject
                 {
                     Destroy(hit.transform.gameObject);
+                    primitive = Instantiate(explosion, hit.transform.position, Quaternion.identity);
+                    Destroy(primitive, 1f);
                 }
                 //this destroys the paint object, but we can modify it, scale it, recolor it, etc
             }
         }
 
-        if (Input.GetMouseButtonUp(1)) //user released right mouse button so reset lastPosition to avoid large spawns at next paint drop
+        if (Input.GetMouseButtonUp(0)) //user released left mouse button so reset lastPosition to avoid large spawns at next paint drop
         {
             lastClickPosition = Vector3.zero;
         }
 
-        if (Input.GetMouseButtonDown(1) || Input.GetMouseButton(1)) //right click or hold
+        if (Input.GetMouseButton(0) && (EventSystem.current.currentSelectedGameObject == null) && Input.mousePosition.x > 200f) //left hold
         {
             clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition + new Vector3(0f, 0f, distance));
 
@@ -109,6 +111,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             else
             {
                 //NEW
+                //float x = Mathf.Clamp(Random.Range(0.5f, 3f) * Mathf.Abs(lastClickPosition.x - clickPosition.x), .1f, 5f);
                 float x = Mathf.Clamp(Random.Range(size, size * 6f) * Mathf.Abs(lastClickPosition.x - clickPosition.x), .1f, size * 10f);
                 float y = Mathf.Clamp(Random.Range(size, size * 6f) * Mathf.Abs(lastClickPosition.y - clickPosition.y), .1f, size * 10f);
                 float z = (x + y) / 2f;
@@ -161,6 +164,8 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
+            primitive = Instantiate(explosion, child.position, Quaternion.identity);
+            Destroy(primitive, 1f);
         }
     }
 
@@ -175,6 +180,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         foreach (Transform child in transform)
         {
             child.localScale = child.localScale * temp / size;
+            //child.localScale = child.localScale * temp;
         }
         size = temp;
     }
