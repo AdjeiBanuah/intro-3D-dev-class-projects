@@ -58,6 +58,8 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         //NEW if check
         if (Input.GetMouseButton(1) && (EventSystem.current.currentSelectedGameObject == null)) //right hold
         {
+            //distance += distanceChange;
+
             //checking for an colliders out in the virtual world that my mousePosition 
             //is over when the user left clicks or holds
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -119,10 +121,21 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             }
             //randomizing colors and scale
             //primitive.transform.position = clickPosition;
-            paintedObjectColor = new Color(Random.Range(0.0f, red), Random.Range(0.0f, green), Random.Range(0.0f, blue), opacityStrength);
-            primitive.GetComponent<Renderer>().material.color = paintedObjectColor;
-            paintedObjectEmission = new Color(paintedObjectColor.r * emissionStrength, paintedObjectColor.g * emissionStrength, paintedObjectColor.b * emissionStrength);
-            primitive.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
+            if(primitive.GetComponent<Renderer>() != null)
+            {
+                paintedObjectColor = new Color(Random.Range(0.0f, red), Random.Range(0.0f, green), Random.Range(0.0f, blue), opacityStrength);
+                primitive.GetComponent<Renderer>().material.color = paintedObjectColor;
+                paintedObjectEmission = new Color(paintedObjectColor.r * emissionStrength, paintedObjectColor.g * emissionStrength, paintedObjectColor.b * emissionStrength);
+                primitive.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
+            }
+            
+            foreach (Transform child in primitive.transform)
+            {
+                paintedObjectColor = new Color(Random.Range(0.0f, red), Random.Range(0.0f, green), Random.Range(0.0f, blue), opacityStrength);
+                child.gameObject.GetComponent<Renderer>().material.color = paintedObjectColor;
+                paintedObjectEmission = new Color(paintedObjectColor.r * emissionStrength, paintedObjectColor.g * emissionStrength, paintedObjectColor.b * emissionStrength);
+                child.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
+            }
 
             primitive.transform.parent = this.transform;
             if(timedDestroyIsOn)
