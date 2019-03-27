@@ -6894,11 +6894,11 @@ MonoBehaviour:
   distance: 5
   distanceChange: 0
   lifeTime: {fileID: 0}
-  paintedObject00: {fileID: 1923179002989884, guid: a58623d0724a4484f870065a5d6fbce4,
+  paintedObject00: {fileID: 1062313509409930, guid: e402ca77c66d14b4fbeb955d5b3fd662,
     type: 2}
-  paintedObject01: {fileID: 1062313509409930, guid: 6a107284276846348b7d18296ca46bc1,
+  paintedObject01: {fileID: 1418026778907398, guid: 6d20e2b916660ad45899a729c2bb4745,
     type: 2}
-  paintedObject02: {fileID: 1049520274572016, guid: 7853b6a20a3d31a46bd1dae6ecfa5be7,
+  paintedObject02: {fileID: 1819043222492180, guid: 583cb8e3ceabc03468a821db68f4cd39,
     type: 2}
   explosion: {fileID: 1244204695245676, guid: 891db6d174a9f4a40a48212ebfeb62e7, type: 2}
   emissionStrength: 0.5
