@@ -3962,7 +3962,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Sphere
+  m_Text: Cube
 --- !u!222 &729369275
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6370,7 +6370,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 130, y: 139.68}
+  m_AnchoredPosition: {x: 151.6, y: 139.68}
   m_SizeDelta: {x: 48.3, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1086701473
@@ -6898,7 +6898,7 @@ MonoBehaviour:
     type: 2}
   paintedObject01: {fileID: 1418026778907398, guid: 6d20e2b916660ad45899a729c2bb4745,
     type: 2}
-  paintedObject02: {fileID: 1819043222492180, guid: 583cb8e3ceabc03468a821db68f4cd39,
+  paintedObject02: {fileID: 1337708733281170, guid: 0aaec3fc705869f48a98d345d382b404,
     type: 2}
   explosion: {fileID: 1244204695245676, guid: 891db6d174a9f4a40a48212ebfeb62e7, type: 2}
   emissionStrength: 0.5
@@ -8633,34 +8633,6 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1388127750}
   m_CullTransparentMesh: 0
---- !u!1 &1423617319
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1423617320}
-  m_Layer: 0
-  m_Name: ClickDetector
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1423617320
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1423617319}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.373108, y: 4.257598, z: 4.7293644}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1428518019
 GameObject:
   m_ObjectHideFlags: 0
@@ -10071,7 +10043,7 @@ RectTransform:
   - {fileID: 349631001}
   - {fileID: 2064888100}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -12650,8 +12622,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 55, y: 139.68}
-  m_SizeDelta: {x: 92.5, y: 31.549988}
+  m_AnchoredPosition: {x: 68.3, y: 139.68}
+  m_SizeDelta: {x: 106.92, y: 31.549988}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1824697323
 MonoBehaviour:
@@ -12697,11 +12669,11 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Sphere
-      m_Image: {fileID: 0}
     - m_Text: Cube
       m_Image: {fileID: 0}
-    - m_Text: Cylinder
+    - m_Text: MultiCube
+      m_Image: {fileID: 0}
+    - m_Text: MultiCylinders
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:

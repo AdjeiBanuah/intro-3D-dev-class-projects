@@ -131,10 +131,13 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             
             foreach (Transform child in primitive.transform)
             {
-                paintedObjectColor = new Color(Random.Range(0.0f, red), Random.Range(0.0f, green), Random.Range(0.0f, blue), opacityStrength);
-                child.gameObject.GetComponent<Renderer>().material.color = paintedObjectColor;
-                paintedObjectEmission = new Color(paintedObjectColor.r * emissionStrength, paintedObjectColor.g * emissionStrength, paintedObjectColor.b * emissionStrength);
-                child.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
+                if (primitive.GetComponent<Renderer>() != null)
+                {
+                    paintedObjectColor = new Color(Random.Range(0.0f, red), Random.Range(0.0f, green), Random.Range(0.0f, blue), opacityStrength);
+                    child.gameObject.GetComponent<Renderer>().material.color = paintedObjectColor;
+                    paintedObjectEmission = new Color(paintedObjectColor.r * emissionStrength, paintedObjectColor.g * emissionStrength, paintedObjectColor.b * emissionStrength);
+                    child.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
+                }   
             }
 
             primitive.transform.parent = this.transform;
