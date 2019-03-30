@@ -10,7 +10,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
     private int shape = 0;
     private GameObject primitive;
     private float red = .8f, green = .8f, blue = .8f, destroyTime = 3f, timeToDestroy = 3f;
-    public Text mousePosition, blueAmount, redAmount, greenAmount, sizeAmount, timerAmount;
+    public Text mousePosition, blueAmount, redAmount, greenAmount, sizeAmount, timerAmount, animAmount;
 
     [SerializeField]
     private float distance = 5f, distanceChange;
@@ -31,8 +31,16 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
 
     private float opacityStrength = 0.5f;
 
+    private int animationState = 0;
+    private float animationSpeed = 1f;
+
+    public Dropdown animDropDown;
+
     void Update ()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha1)) ChangeAnimationState(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) ChangeAnimationState(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) ChangeAnimationState(2);
 
         if (Input.GetMouseButtonDown(0)) //left click
         {
@@ -53,7 +61,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
 
         //NEW
         //Debug.Log(EventSystem.current.currentSelectedGameObject.ToString());
-        Debug.Log((EventSystem.current.currentSelectedGameObject == null));
+        //Debug.Log((EventSystem.current.currentSelectedGameObject == null));
 
         //NEW if check
         if (Input.GetMouseButton(1) && (EventSystem.current.currentSelectedGameObject == null)) //right hold
@@ -106,21 +114,19 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                     //if no cases are true, do this by default
                     break;
             }
+
             //for the first paint drop as it doesnt have reference
             //primitive.transform.localScale = new Vector3(Random.Range(0.1f, 1f)* size, Random.Range(0.1f, 1f)*size, Random.Range(0.1f, 1f)*size);
-
             if (lastClickPosition == Vector3.zero) primitive.transform.localScale = new Vector3(Random.Range(0.1f, 1f)*size, Random.Range(0.1f, 1f)*size, Random.Range(0.1f, 1f)*size);
             else
             {
-                //NEW
-                //float x = Mathf.Clamp(Random.Range(0.5f, 3f) * Mathf.Abs(lastClickPosition.x - clickPosition.x), .1f, 5f);
                 float x = Mathf.Clamp(Random.Range(size, size * 6f) * Mathf.Abs(lastClickPosition.x - clickPosition.x), .1f, size * 10f);
                 float y = Mathf.Clamp(Random.Range(size, size * 6f) * Mathf.Abs(lastClickPosition.y - clickPosition.y), .1f, size * 10f);
                 float z = (x + y) / 2f;
                 primitive.transform.localScale = new Vector3(x, y, z);
             }
+
             //randomizing colors and scale
-            //primitive.transform.position = clickPosition;
             if(primitive.GetComponent<Renderer>() != null)
             {
                 paintedObjectColor = new Color(Random.Range(0.0f, red), Random.Range(0.0f, green), Random.Range(0.0f, blue), opacityStrength);
@@ -129,9 +135,16 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 primitive.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
             }
             
+            if(primitive.GetComponent<Animator>() != null)
+            {
+                primitive.GetComponent<Animator>().SetInteger("state", animationState);
+                primitive.GetComponent<Animator>().speed = animationSpeed;
+            }
+
             foreach (Transform child in primitive.transform)
             {
-                if (primitive.GetComponent<Renderer>() != null)
+                //UPDATE bad code 
+                if (child.gameObject.GetComponent<Renderer>() != null)
                 {
                     paintedObjectColor = new Color(Random.Range(0.0f, red), Random.Range(0.0f, green), Random.Range(0.0f, blue), opacityStrength);
                     child.gameObject.GetComponent<Renderer>().material.color = paintedObjectColor;
@@ -155,6 +168,35 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
     {
         shape = tempShape;
         
+    }
+
+    //NEW
+    public void ChangeAnimationState(int temp)
+    {
+        animationState = temp;
+        animDropDown.value = animationState;
+
+        foreach (Transform child in transform)
+        {
+            if(child.gameObject.GetComponent<Animator>() != null)
+            {
+                child.gameObject.GetComponent<Animator>().SetInteger("state", animationState);
+            }
+        }
+    }
+
+    //NEW
+    public void ChangeAnimationSpeed(float temp)
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.GetComponent<Animator>() != null)
+            {
+                child.gameObject.GetComponent<Animator>().speed = temp;
+            }
+        }
+        animationSpeed = temp;
+        animAmount.text = animationSpeed.ToString("F1") + " Sec";
     }
 
     public void ChangeRed(float tempRed)
@@ -190,37 +232,60 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         timedDestroyIsOn = timer;
     }
 
-    //NEW
     public void ChangeSize(float temp)
     {
         foreach (Transform child in transform)
         {
             child.localScale = child.localScale * temp / size;
-            //child.localScale = child.localScale * temp;
         }
         size = temp;
     }
 
-    //NEW
     public void ChangeEmissionStrength(float temp)
     {
         foreach (Transform child in transform)
         {
-            paintedObjectColor = child.GetComponent<Renderer>().material.GetColor("_Color");
-            paintedObjectEmission = new Color(paintedObjectColor.r * temp, paintedObjectColor.g * temp, paintedObjectColor.b * temp);
-            child.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
+            if (child.gameObject.GetComponent<Renderer>() != null)
+            {
+                paintedObjectColor = child.GetComponent<Renderer>().material.GetColor("_Color");
+                paintedObjectEmission = new Color(paintedObjectColor.r * temp, paintedObjectColor.g * temp, paintedObjectColor.b * temp);
+                child.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
+            }
+
+            foreach (Transform grandchild in child.transform)
+            {
+                if (grandchild.gameObject.GetComponent<Renderer>() != null)
+                {
+                    paintedObjectColor = grandchild.GetComponent<Renderer>().material.GetColor("_Color");
+                    paintedObjectEmission = new Color(paintedObjectColor.r * temp, paintedObjectColor.g * temp, paintedObjectColor.b * temp);
+                    grandchild.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
+                }
+            }
+
         }
         emissionStrength = temp;
     }
 
-    //NEW
     public void ChangeOpacityStrength(float temp)
     {
         foreach (Transform child in transform)
         {
-            paintedObjectColor = child.GetComponent<Renderer>().material.GetColor("_Color");
-            paintedObjectColor.a = temp;
-            child.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
+            if (child.gameObject.GetComponent<Renderer>() != null)
+            {
+                paintedObjectColor = child.GetComponent<Renderer>().material.GetColor("_Color");
+                paintedObjectColor.a = temp;
+                child.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
+            }
+
+            foreach (Transform grandchild in child.transform)
+            {
+                if (grandchild.gameObject.GetComponent<Renderer>() != null)
+                {
+                    paintedObjectColor = grandchild.GetComponent<Renderer>().material.GetColor("_Color");
+                    paintedObjectColor.a = temp;
+                    grandchild.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
+                }
+            }
         }
         opacityStrength = temp;
     }
