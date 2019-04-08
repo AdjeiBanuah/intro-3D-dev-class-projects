@@ -16,7 +16,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
     private float distance = 5f, distanceChange;
 
     private Vector3 clickPosition;
-    private bool timedDestroyIsOn = true;
+    private bool timedDestroyIsOn = true, isAnimTypeRandom, isAnimSpeedRandom;
     private float size = 0.5f;
 
     private Vector3 lastClickPosition = Vector3.zero;
@@ -127,20 +127,15 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             }
 
             //randomizing colors and scale
-            if(primitive.GetComponent<Renderer>() != null)
+            if (primitive.GetComponent<Renderer>() != null)
             {
                 paintedObjectColor = new Color(Random.Range(0.0f, red), Random.Range(0.0f, green), Random.Range(0.0f, blue), opacityStrength);
                 primitive.GetComponent<Renderer>().material.color = paintedObjectColor;
                 paintedObjectEmission = new Color(paintedObjectColor.r * emissionStrength, paintedObjectColor.g * emissionStrength, paintedObjectColor.b * emissionStrength);
                 primitive.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
             }
+            else { }
             
-            if(primitive.GetComponent<Animator>() != null)
-            {
-                primitive.GetComponent<Animator>().SetInteger("state", animationState);
-                primitive.GetComponent<Animator>().speed = animationSpeed;
-            }
-
             foreach (Transform child in primitive.transform)
             {
                 //UPDATE bad code 
@@ -151,6 +146,15 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                     paintedObjectEmission = new Color(paintedObjectColor.r * emissionStrength, paintedObjectColor.g * emissionStrength, paintedObjectColor.b * emissionStrength);
                     child.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
                 }   
+            }
+
+            if (primitive.GetComponent<Animator>() != null)
+            {
+                if (isAnimTypeRandom) animationState = (int)Random.Range(0f, 2.99f);
+                primitive.GetComponent<Animator>().SetInteger("state", animationState);
+
+                if (isAnimSpeedRandom) animationSpeed = Random.Range(0f, 1f);
+                primitive.GetComponent<Animator>().speed = animationSpeed;
             }
 
             primitive.transform.parent = this.transform;
@@ -170,13 +174,22 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         
     }
 
-    //NEW
+    public void ChangeAnimationTypeRandom(bool temp)
+    {
+        isAnimTypeRandom = temp;
+    }
+
+    public void ChangeAnimationSpeedRandom(bool temp)
+    {
+        isAnimSpeedRandom = temp;
+    }
+
     public void ChangeAnimationState(int temp)
     {
-        animationState = temp;
+        animationState = temp; // current/future painted objects
         animDropDown.value = animationState;
 
-        foreach (Transform child in transform)
+        foreach (Transform child in transform) //past painted objects
         {
             if(child.gameObject.GetComponent<Animator>() != null)
             {
@@ -185,7 +198,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         }
     }
 
-    //NEW
+    //cover next week
     public void ChangeAnimationSpeed(float temp)
     {
         foreach (Transform child in transform)
@@ -199,21 +212,82 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         animAmount.text = animationSpeed.ToString("F1") + " Sec";
     }
 
-    public void ChangeRed(float tempRed)
+    //cover next week
+    public void ChangeRed(float temp)
     {
-        red = tempRed;
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.GetComponent<Renderer>() != null)
+            {
+                paintedObjectColor = child.GetComponent<Renderer>().material.GetColor("_Color");
+                paintedObjectColor = new Color(paintedObjectColor.r * temp, paintedObjectColor.g, paintedObjectColor.b);
+                child.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
+            }
+
+            foreach (Transform grandchild in child.transform)
+            {
+                if (grandchild.gameObject.GetComponent<Renderer>() != null)
+                {
+                    paintedObjectColor = grandchild.GetComponent<Renderer>().material.GetColor("_Color");
+                    paintedObjectColor = new Color(paintedObjectColor.r * temp, paintedObjectColor.g, paintedObjectColor.b);
+                    grandchild.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
+                }
+            }
+        }
+
+        red = temp;
         redAmount.text = (red * 100f).ToString("F0");
     }
 
-    public void ChangeGreen(float tempGreen)
+    public void ChangeGreen(float temp)
     {
-        green = tempGreen;
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.GetComponent<Renderer>() != null)
+            {
+                paintedObjectColor = child.GetComponent<Renderer>().material.GetColor("_Color");
+                paintedObjectColor = new Color(paintedObjectColor.r, paintedObjectColor.g * temp, paintedObjectColor.b);
+                child.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
+            }
+
+            foreach (Transform grandchild in child.transform)
+            {
+                if (grandchild.gameObject.GetComponent<Renderer>() != null)
+                {
+                    paintedObjectColor = grandchild.GetComponent<Renderer>().material.GetColor("_Color");
+                    paintedObjectColor = new Color(paintedObjectColor.r, paintedObjectColor.g * temp, paintedObjectColor.b);
+                    grandchild.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
+                }
+            }
+        }
+
+        green = temp;
         greenAmount.text = (green * 100f).ToString("F0");
     }
 
-    public void ChangeBlue(float tempBlue)
+    public void ChangeBlue(float temp)
     {
-        blue = tempBlue;
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.GetComponent<Renderer>() != null)
+            {
+                paintedObjectColor = child.GetComponent<Renderer>().material.GetColor("_Color");
+                paintedObjectColor = new Color(paintedObjectColor.r, paintedObjectColor.g, paintedObjectColor.b * temp);
+                child.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
+            }
+
+            foreach (Transform grandchild in child.transform)
+            {
+                if (grandchild.gameObject.GetComponent<Renderer>() != null)
+                {
+                    paintedObjectColor = grandchild.GetComponent<Renderer>().material.GetColor("_Color");
+                    paintedObjectColor = new Color(paintedObjectColor.r, paintedObjectColor.g, paintedObjectColor.b * temp);
+                    grandchild.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
+                }
+            }
+        }
+
+        blue = temp;
         blueAmount.text = (blue * 100f).ToString("F0");
     }
 
@@ -241,6 +315,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         size = temp;
     }
 
+    //cover next week
     public void ChangeEmissionStrength(float temp)
     {
         foreach (Transform child in transform)
@@ -266,6 +341,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         emissionStrength = temp;
     }
 
+    //cover next week
     public void ChangeOpacityStrength(float temp)
     {
         foreach (Transform child in transform)
