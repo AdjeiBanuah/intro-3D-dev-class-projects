@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIAnimation : MonoBehaviour
 {
 
     private bool isHidden = false;
     private IEnumerator coroutine;
-    public float speed = 2f;
-    private Vector3 showPos, hidePos;
+    public float animTime = 2f;
+    private Vector3 showPos, hidePos, startPos;
+    public Button hideButton;
 
     private void Start()
     {
@@ -42,13 +44,14 @@ public class UIAnimation : MonoBehaviour
     private IEnumerator MovingUI(Vector3 endPos)
     {
         float elapsedTime = 0f;
-
-        while(Vector3.Distance(transform.position, endPos) > 0.01f)
+        startPos = transform.position;
+        hideButton.interactable = false;
+        while (Vector3.Distance(transform.position, endPos) > 0.01f)
         {
-            transform.localPosition = Vector3.Lerp(transform.position, endPos, elapsedTime/speed);
+            transform.position = Vector3.Lerp(startPos, endPos, elapsedTime/animTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        
+        hideButton.interactable = true;
     }
 }

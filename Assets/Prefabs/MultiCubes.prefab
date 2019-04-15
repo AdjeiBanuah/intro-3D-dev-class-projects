@@ -38,6 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4844294601866582}
   - component: {fileID: 95734025504878850}
+  - component: {fileID: 114635619484661452}
   m_Layer: 0
   m_Name: MultiCubes
   m_TagString: Untagged
@@ -316,3 +317,16 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114635619484661452
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1418026778907398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b89fee0cc26051e43a93e567e18baada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialAnimSpeed: 0
+  initialColorInfo: {r: 0, g: 0, b: 0, a: 0}

@@ -9,7 +9,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
 
     private int shape = 0;
     private GameObject primitive;
-    private float red = .8f, green = .8f, blue = .8f, destroyTime = 3f, timeToDestroy = 3f;
+    private float red = .8f, green = .8f, blue = .8f, destroyTime = 3f, timeToDestroy = 3f, Xcutoff;
     public Text mousePosition, blueAmount, redAmount, greenAmount, sizeAmount, timerAmount, animAmount;
 
     [SerializeField]
@@ -93,9 +93,14 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             lastClickPosition = Vector3.zero;
         }
 
+        //check if UI is show or hidden
+        //if UI is show Xcutoff = 200f
+        //else UI is hidden Xcutoff = 0f
+
         //NEW Got rid of mousePosition check since moved paint stroke behind UI
-        if (Input.GetMouseButton(0) && (EventSystem.current.currentSelectedGameObject == null)) //&& Input.mousePosition.x > 200f) //left hold
+        if (Input.GetMouseButton(0) && (EventSystem.current.currentSelectedGameObject == null) && Input.mousePosition.x > Xcutoff) //left hold
         {
+            
             clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition + new Vector3(0f, 0f, distance));
 
             switch (shape)
@@ -146,6 +151,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 {
                     paintedObjectColor = new Color(Random.Range(0.0f, red), Random.Range(0.0f, green), Random.Range(0.0f, blue), opacityStrength);
                     child.gameObject.GetComponent<Renderer>().material.color = paintedObjectColor;
+                    primitive.gameObject.GetComponent<PrefabData>().initialColorInfo.Add(paintedObjectColor); //NEW
                     paintedObjectEmission = new Color(paintedObjectColor.r * emissionStrength, paintedObjectColor.g * emissionStrength, paintedObjectColor.b * emissionStrength);
                     child.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
                 }   
@@ -163,7 +169,8 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
 
                 if (isAnimSpeedRandom) animationSpeed = Random.Range(0f, 1f);
                 primitive.GetComponent<Animator>().speed = animationSpeed;
-                primitive.GetComponent<Animator>().SetFloat("speed", animationSpeed);
+                //primitive.GetComponent<Animator>().SetFloat("speed", animationSpeed);
+                primitive.GetComponent<PrefabData>().initialAnimSpeed = animationSpeed;
             }
 
             primitive.transform.parent = this.transform;
@@ -207,7 +214,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 if (child.gameObject.GetComponent<Animator>() != null)
                 {
                     child.gameObject.GetComponent<Animator>().SetInteger("state", animationState);
-                    child.gameObject.GetComponent<Animator>().speed = primitive.GetComponent<Animator>().GetFloat("speed");
+                    child.gameObject.GetComponent<Animator>().speed = primitive.GetComponent<PrefabData>().initialAnimSpeed;//primitive.GetComponent<Animator>().GetFloat("speed");
                 }
             }
         }
@@ -229,7 +236,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         {
             if (child.gameObject.GetComponent<Animator>() != null)
             {
-                child.gameObject.GetComponent<Animator>().speed = primitive.GetComponent<Animator>().GetFloat("speed") * temp;
+                child.gameObject.GetComponent<Animator>().speed = primitive.GetComponent<PrefabData>().initialAnimSpeed * temp;//primitive.GetComponent<Animator>().GetFloat("speed") * temp;
             }
         }
 
@@ -248,15 +255,17 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 child.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
             }
 
+            int childCount = 0;
             foreach (Transform grandchild in child.transform) //prefab's children
             {
                 if (grandchild.gameObject.GetComponent<Renderer>() != null)
                 {
                     paintedObjectColor = grandchild.GetComponent<Renderer>().material.GetColor("_Color");
-                    paintedObjectColor.r = temp;
+                    paintedObjectColor.r = child.GetComponent<PrefabData>().initialColorInfo[childCount].r * temp;
                     //paintedObjectColor = new Color(temp, paintedObjectColor.g, paintedObjectColor.b, paintedObjectColor.a);
                     grandchild.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
                 }
+                childCount++;
             }
         }
 
@@ -275,15 +284,18 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 child.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
             }
 
+            int childCount = 0;
             foreach (Transform grandchild in child.transform)
             {
                 if (grandchild.gameObject.GetComponent<Renderer>() != null)
                 {
                     paintedObjectColor = grandchild.GetComponent<Renderer>().material.GetColor("_Color");
-                    paintedObjectColor = new Color(paintedObjectColor.r, temp, paintedObjectColor.b, paintedObjectColor.a);
+                    paintedObjectColor.g = child.GetComponent<PrefabData>().initialColorInfo[childCount].g * temp;
                     grandchild.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
                 }
+                childCount++;
             }
+            
         }
 
         green = temp;
@@ -301,14 +313,16 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 child.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
             }
 
+            int childCount = 0;
             foreach (Transform grandchild in child.transform)
             {
                 if (grandchild.gameObject.GetComponent<Renderer>() != null)
                 {
                     paintedObjectColor = grandchild.GetComponent<Renderer>().material.GetColor("_Color");
-                    paintedObjectColor = new Color(paintedObjectColor.r, paintedObjectColor.g, temp, paintedObjectColor.a);
+                    paintedObjectColor.b = child.GetComponent<PrefabData>().initialColorInfo[childCount].b * temp;
                     grandchild.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
                 }
+                childCount++;
             }
         }
 
