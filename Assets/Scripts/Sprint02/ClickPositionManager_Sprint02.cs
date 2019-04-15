@@ -34,13 +34,16 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
     private int animationState = 0;
     private float animationSpeed = 1f;
 
-    public Dropdown animDropDown;
+    public Dropdown animDropDown, shapeDropDown;
 
     void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) ChangeAnimationState(0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) ChangeAnimationState(1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) ChangeAnimationState(2);
+        if (Input.GetKeyDown(KeyCode.Alpha1)) animDropDown.value = 0;
+        if (Input.GetKeyDown(KeyCode.Alpha2)) animDropDown.value = 1;
+        if (Input.GetKeyDown(KeyCode.Alpha3)) animDropDown.value = 2;
+        if (Input.GetKeyDown(KeyCode.Alpha4)) ChangeSpawnObject(0);
+        if (Input.GetKeyDown(KeyCode.Alpha5)) ChangeSpawnObject(1);
+        if (Input.GetKeyDown(KeyCode.Alpha6)) ChangeSpawnObject(2);
 
         if (Input.GetMouseButtonDown(0)) //left click
         {
@@ -90,7 +93,8 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             lastClickPosition = Vector3.zero;
         }
 
-        if (Input.GetMouseButton(0) && (EventSystem.current.currentSelectedGameObject == null) && Input.mousePosition.x > 200f) //left hold
+        //NEW Got rid of mousePosition check since moved paint stroke behind UI
+        if (Input.GetMouseButton(0) && (EventSystem.current.currentSelectedGameObject == null)) //&& Input.mousePosition.x > 200f) //left hold
         {
             clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition + new Vector3(0f, 0f, distance));
 
@@ -138,7 +142,6 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             
             foreach (Transform child in primitive.transform)
             {
-                //UPDATE bad code 
                 if (child.gameObject.GetComponent<Renderer>() != null)
                 {
                     paintedObjectColor = new Color(Random.Range(0.0f, red), Random.Range(0.0f, green), Random.Range(0.0f, blue), opacityStrength);
@@ -148,13 +151,19 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 }   
             }
 
+            //New
             if (primitive.GetComponent<Animator>() != null)
             {
-                if (isAnimTypeRandom) animationState = (int)Random.Range(0f, 2.99f);
-                primitive.GetComponent<Animator>().SetInteger("state", animationState);
+                if (isAnimTypeRandom)
+                {
+                    animationState = (int)Random.Range(0f, 2.99f);
+                    animDropDown.value = animationState;
+                }
+                    primitive.GetComponent<Animator>().SetInteger("state", animationState);
 
                 if (isAnimSpeedRandom) animationSpeed = Random.Range(0f, 1f);
                 primitive.GetComponent<Animator>().speed = animationSpeed;
+                primitive.GetComponent<Animator>().SetFloat("speed", animationSpeed);
             }
 
             primitive.transform.parent = this.transform;
@@ -174,11 +183,13 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         
     }
 
+    //New
     public void ChangeAnimationTypeRandom(bool temp)
     {
         isAnimTypeRandom = temp;
     }
 
+    //New
     public void ChangeAnimationSpeedRandom(bool temp)
     {
         isAnimSpeedRandom = temp;
@@ -187,49 +198,63 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
     public void ChangeAnimationState(int temp)
     {
         animationState = temp; // current/future painted objects
-        animDropDown.value = animationState;
+        //animDropDown.value = animationState; had to remove as the UI dropdown element ends up calling this method twice
 
-        foreach (Transform child in transform) //past painted objects
+        if(!isAnimTypeRandom)
         {
-            if(child.gameObject.GetComponent<Animator>() != null)
+            foreach (Transform child in transform) //past painted objects
             {
-                child.gameObject.GetComponent<Animator>().SetInteger("state", animationState);
+                if (child.gameObject.GetComponent<Animator>() != null)
+                {
+                    child.gameObject.GetComponent<Animator>().SetInteger("state", animationState);
+                    child.gameObject.GetComponent<Animator>().speed = primitive.GetComponent<Animator>().GetFloat("speed");
+                }
             }
         }
+    }
+
+    public void ChangeSpawnObject(int temp)
+    {
+        shape = temp; // current/future painted objects
+        shapeDropDown.value = temp;
     }
 
     //cover next week
     public void ChangeAnimationSpeed(float temp)
     {
+        animationSpeed = temp;
+        animAmount.text = animationSpeed.ToString("F1") + "X";
+
         foreach (Transform child in transform)
         {
             if (child.gameObject.GetComponent<Animator>() != null)
             {
-                child.gameObject.GetComponent<Animator>().speed = temp;
+                child.gameObject.GetComponent<Animator>().speed = primitive.GetComponent<Animator>().GetFloat("speed") * temp;
             }
         }
-        animationSpeed = temp;
-        animAmount.text = animationSpeed.ToString("F1") + " Sec";
+
     }
 
     //cover next week
     public void ChangeRed(float temp)
     {
-        foreach (Transform child in transform)
+        foreach (Transform child in transform) //prefab's parented under click manager object
         {
             if (child.gameObject.GetComponent<Renderer>() != null)
             {
                 paintedObjectColor = child.GetComponent<Renderer>().material.GetColor("_Color");
-                paintedObjectColor = new Color(paintedObjectColor.r * temp, paintedObjectColor.g, paintedObjectColor.b);
+                paintedObjectColor.r = temp;
+                //paintedObjectColor = new Color(temp, paintedObjectColor.g, paintedObjectColor.b, paintedObjectColor.a);
                 child.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
             }
 
-            foreach (Transform grandchild in child.transform)
+            foreach (Transform grandchild in child.transform) //prefab's children
             {
                 if (grandchild.gameObject.GetComponent<Renderer>() != null)
                 {
                     paintedObjectColor = grandchild.GetComponent<Renderer>().material.GetColor("_Color");
-                    paintedObjectColor = new Color(paintedObjectColor.r * temp, paintedObjectColor.g, paintedObjectColor.b);
+                    paintedObjectColor.r = temp;
+                    //paintedObjectColor = new Color(temp, paintedObjectColor.g, paintedObjectColor.b, paintedObjectColor.a);
                     grandchild.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
                 }
             }
@@ -246,7 +271,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             if (child.gameObject.GetComponent<Renderer>() != null)
             {
                 paintedObjectColor = child.GetComponent<Renderer>().material.GetColor("_Color");
-                paintedObjectColor = new Color(paintedObjectColor.r, paintedObjectColor.g * temp, paintedObjectColor.b);
+                paintedObjectColor = new Color(paintedObjectColor.r, temp, paintedObjectColor.b, paintedObjectColor.a);
                 child.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
             }
 
@@ -255,7 +280,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 if (grandchild.gameObject.GetComponent<Renderer>() != null)
                 {
                     paintedObjectColor = grandchild.GetComponent<Renderer>().material.GetColor("_Color");
-                    paintedObjectColor = new Color(paintedObjectColor.r, paintedObjectColor.g * temp, paintedObjectColor.b);
+                    paintedObjectColor = new Color(paintedObjectColor.r, temp, paintedObjectColor.b, paintedObjectColor.a);
                     grandchild.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
                 }
             }
@@ -272,7 +297,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             if (child.gameObject.GetComponent<Renderer>() != null)
             {
                 paintedObjectColor = child.GetComponent<Renderer>().material.GetColor("_Color");
-                paintedObjectColor = new Color(paintedObjectColor.r, paintedObjectColor.g, paintedObjectColor.b * temp);
+                paintedObjectColor = new Color(paintedObjectColor.r, paintedObjectColor.g, temp, paintedObjectColor.a);
                 child.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
             }
 
@@ -281,7 +306,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 if (grandchild.gameObject.GetComponent<Renderer>() != null)
                 {
                     paintedObjectColor = grandchild.GetComponent<Renderer>().material.GetColor("_Color");
-                    paintedObjectColor = new Color(paintedObjectColor.r, paintedObjectColor.g, paintedObjectColor.b * temp);
+                    paintedObjectColor = new Color(paintedObjectColor.r, paintedObjectColor.g, temp, paintedObjectColor.a);
                     grandchild.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
                 }
             }
@@ -289,30 +314,6 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
 
         blue = temp;
         blueAmount.text = (blue * 100f).ToString("F0");
-    }
-
-    public void DestroyObjects()
-    {
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
-            primitive = Instantiate(explosion, child.position, Quaternion.identity);
-            Destroy(primitive, 1f);
-        }
-    }
-
-    public void ToggleTimedDestroy(bool timer)
-    {
-        timedDestroyIsOn = timer;
-    }
-
-    public void ChangeSize(float temp)
-    {
-        foreach (Transform child in transform)
-        {
-            child.localScale = child.localScale * temp / size;
-        }
-        size = temp;
     }
 
     //cover next week
@@ -364,6 +365,30 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             }
         }
         opacityStrength = temp;
+    }
+
+    public void DestroyObjects()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+            primitive = Instantiate(explosion, child.position, Quaternion.identity);
+            Destroy(primitive, 1f);
+        }
+    }
+
+    public void ToggleTimedDestroy(bool timer)
+    {
+        timedDestroyIsOn = timer;
+    }
+
+    public void ChangeSize(float temp)
+    {
+        foreach (Transform child in transform)
+        {
+            child.localScale = child.localScale * temp / size;
+        }
+        size = temp;
     }
 
     public void ChangeTimeToDestroy(float temp)

@@ -11,7 +11,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Sprint01Project.unity
     guid: 240d933a7691e444d998b1e2dca6a4bc
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Sprint02Project.unity
     guid: 43356764484b65041bee996ba2072508
+  - enabled: 1
+    path: Assets/Scenes/Sprint03Project.unity
+    guid: 55142e813a3ec2743bc5583eed855285
   m_configObjects: {}
