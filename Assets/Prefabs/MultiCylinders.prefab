@@ -293,11 +293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialAnimSpeed: 0
-  initialColorInfo:
-  - {r: 62837, g: 0, b: 1.1448636e+24, a: 6.4099726e-10}
-  - {r: 377704450, g: 0, b: 4.6e-44, a: 0}
-  - {r: 62837, g: 0, b: 62826.5, a: 0}
-  - {r: 377705470, g: 0, b: 6.9e-44, a: 0}
+  initialColorInfo: []
 --- !u!136 &136294409533840066
 CapsuleCollider:
   m_ObjectHideFlags: 1

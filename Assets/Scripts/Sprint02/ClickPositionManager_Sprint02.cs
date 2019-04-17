@@ -9,14 +9,14 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
 
     private int shape = 0;
     private GameObject primitive;
-    private float red = .8f, green = .8f, blue = .8f, destroyTime = 3f, timeToDestroy = 3f, Xcutoff;
+    private float red = 1.0f, green = 1.0f, blue = 1.0f, destroyTime = 3f, timeToDestroy = 3f, Xcutoff;
     public Text mousePosition, blueAmount, redAmount, greenAmount, sizeAmount, timerAmount, animAmount;
 
     [SerializeField]
     private float distance = 5f, distanceChange;
 
     private Vector3 clickPosition;
-    private bool timedDestroyIsOn = true, isAnimTypeRandom, isAnimSpeedRandom;
+    private bool timedDestroyIsOn = true, isAnimTypeRandom, isAnimSpeedRandom, isSpawnTypeRandom, isSpawnTimeRandom;
     private float size = 1.0f;
 
     private Vector3 lastClickPosition = Vector3.zero;
@@ -103,6 +103,11 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
             
             clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition + new Vector3(0f, 0f, distance));
 
+            if(isSpawnTypeRandom)
+            {
+                ChangeShape((int)Random.Range(0.0f, 2.99f));
+            }
+
             switch (shape)
             {
                 case 0:
@@ -165,18 +170,19 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                     animationState = (int)Random.Range(0f, 2.99f);
                     animDropDown.value = animationState;
                 }
-                    primitive.GetComponent<Animator>().SetInteger("state", animationState);
+                primitive.GetComponent<Animator>().SetInteger("state", animationState);
 
-                if (isAnimSpeedRandom) animationSpeed = Random.Range(0f, 1f);
-                primitive.GetComponent<Animator>().speed = animationSpeed;
+                if (isAnimSpeedRandom) primitive.GetComponent<Animator>().speed =  Random.Range(0f, animationSpeed);
+                else primitive.GetComponent<Animator>().speed = animationSpeed;
                 //primitive.GetComponent<Animator>().SetFloat("speed", animationSpeed);
-                primitive.GetComponent<PrefabData>().initialAnimSpeed = animationSpeed;
+                primitive.GetComponent<PrefabData>().initialAnimSpeed = primitive.GetComponent<Animator>().speed;
             }
 
             primitive.transform.parent = this.transform;
             if(timedDestroyIsOn)
             {
-                Destroy(primitive, timeToDestroy);
+                if(isSpawnTimeRandom) Destroy(primitive, Random.Range(0f, timeToDestroy));
+                else Destroy(primitive, timeToDestroy);
             }
             lastClickPosition = clickPosition;
 
@@ -184,19 +190,27 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         mousePosition.text = "Mouse Position x: " + Input.mousePosition.x.ToString("F0") + ", y: " + Input.mousePosition.y.ToString("F0");
     }
 
-    public void ChangeShape(int tempShape)
+    public void ChangeShape(int temp)
     {
-        shape = tempShape;
-        
+        shape = temp;
+        shapeDropDown.value = temp;
     }
 
-    //New
+    public void ChangePrefabTypeRandom(bool temp)
+    {
+        isSpawnTypeRandom = temp;
+    }
+
+    public void ChangePrefabTimeRandom(bool temp)
+    {
+        isSpawnTimeRandom = temp;
+    }
+
     public void ChangeAnimationTypeRandom(bool temp)
     {
         isAnimTypeRandom = temp;
     }
 
-    //New
     public void ChangeAnimationSpeedRandom(bool temp)
     {
         isAnimSpeedRandom = temp;
@@ -214,8 +228,22 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 if (child.gameObject.GetComponent<Animator>() != null)
                 {
                     child.gameObject.GetComponent<Animator>().SetInteger("state", animationState);
-                    child.gameObject.GetComponent<Animator>().speed = primitive.GetComponent<PrefabData>().initialAnimSpeed;//primitive.GetComponent<Animator>().GetFloat("speed");
+                    //child.gameObject.GetComponent<Animator>().speed = child.GetComponent<PrefabData>().initialAnimSpeed * animationSpeed;//primitive.GetComponent<Animator>().GetFloat("speed");
                 }
+            }
+        }
+    }
+
+    public void ChangeAnimationSpeed(float temp)
+    {
+        animationSpeed = temp;
+        animAmount.text = animationSpeed.ToString("F1") + "X";
+
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.GetComponent<Animator>() != null)
+            {
+                child.gameObject.GetComponent<Animator>().speed = child.GetComponent<PrefabData>().initialAnimSpeed * temp;//primitive.GetComponent<Animator>().GetFloat("speed") * temp;
             }
         }
     }
@@ -226,23 +254,6 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         shapeDropDown.value = temp;
     }
 
-    //cover next week
-    public void ChangeAnimationSpeed(float temp)
-    {
-        animationSpeed = temp;
-        animAmount.text = animationSpeed.ToString("F1") + "X";
-
-        foreach (Transform child in transform)
-        {
-            if (child.gameObject.GetComponent<Animator>() != null)
-            {
-                child.gameObject.GetComponent<Animator>().speed = primitive.GetComponent<PrefabData>().initialAnimSpeed * temp;//primitive.GetComponent<Animator>().GetFloat("speed") * temp;
-            }
-        }
-
-    }
-
-    //cover next week
     public void ChangeRed(float temp)
     {
         foreach (Transform child in transform) //prefab's parented under click manager object
@@ -263,7 +274,9 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                     paintedObjectColor = grandchild.GetComponent<Renderer>().material.GetColor("_Color");
                     paintedObjectColor.r = child.GetComponent<PrefabData>().initialColorInfo[childCount].r * temp;
                     //paintedObjectColor = new Color(temp, paintedObjectColor.g, paintedObjectColor.b, paintedObjectColor.a);
+                    paintedObjectEmission = new Color(paintedObjectColor.r * emissionStrength, paintedObjectColor.g * emissionStrength, paintedObjectColor.b * emissionStrength);
                     grandchild.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
+                    grandchild.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
                 }
                 childCount++;
             }
@@ -291,7 +304,9 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 {
                     paintedObjectColor = grandchild.GetComponent<Renderer>().material.GetColor("_Color");
                     paintedObjectColor.g = child.GetComponent<PrefabData>().initialColorInfo[childCount].g * temp;
+                    paintedObjectEmission = new Color(paintedObjectColor.r * emissionStrength, paintedObjectColor.g * emissionStrength, paintedObjectColor.b * emissionStrength);
                     grandchild.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
+                    grandchild.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
                 }
                 childCount++;
             }
@@ -320,7 +335,9 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
                 {
                     paintedObjectColor = grandchild.GetComponent<Renderer>().material.GetColor("_Color");
                     paintedObjectColor.b = child.GetComponent<PrefabData>().initialColorInfo[childCount].b * temp;
+                    paintedObjectEmission = new Color(paintedObjectColor.r * emissionStrength, paintedObjectColor.g * emissionStrength, paintedObjectColor.b * emissionStrength);
                     grandchild.GetComponent<Renderer>().material.SetColor("_Color", paintedObjectColor);
+                    grandchild.GetComponent<Renderer>().material.SetColor("_EmissionColor", paintedObjectEmission);
                 }
                 childCount++;
             }
@@ -330,7 +347,6 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         blueAmount.text = (blue * 100f).ToString("F0");
     }
 
-    //cover next week
     public void ChangeEmissionStrength(float temp)
     {
         foreach (Transform child in transform)
@@ -356,7 +372,6 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         emissionStrength = temp;
     }
 
-    //cover next week
     public void ChangeOpacityStrength(float temp)
     {
         foreach (Transform child in transform)
