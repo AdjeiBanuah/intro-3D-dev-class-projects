@@ -90,7 +90,7 @@ Transform:
   m_GameObject: {fileID: 1072420558106516}
   m_LocalRotation: {x: 0, y: 0, z: -0.38268343, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_LocalScale: {x: 0.298785, y: 0.59757, z: 0.298785}
   m_Children: []
   m_Father: {fileID: 4391765728633250}
   m_RootOrder: 1
@@ -119,7 +119,7 @@ Transform:
   m_GameObject: {fileID: 1695901210575406}
   m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_LocalScale: {x: 0.298785, y: 0.59757, z: 0.298785}
   m_Children: []
   m_Father: {fileID: 4391765728633250}
   m_RootOrder: 2
@@ -132,7 +132,7 @@ Transform:
   m_GameObject: {fileID: 1901269038987528}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_LocalScale: {x: 0.298785, y: 0.59757, z: 0.298785}
   m_Children: []
   m_Father: {fileID: 4391765728633250}
   m_RootOrder: 0
@@ -293,7 +293,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialAnimSpeed: 0
-  initialColorInfo: {r: 0, g: 0, b: 0, a: 0}
+  initialColorInfo:
+  - {r: 62837, g: 0, b: 1.1448636e+24, a: 6.4099726e-10}
+  - {r: 377704450, g: 0, b: 4.6e-44, a: 0}
+  - {r: 62837, g: 0, b: 62826.5, a: 0}
+  - {r: 377705470, g: 0, b: 6.9e-44, a: 0}
 --- !u!136 &136294409533840066
 CapsuleCollider:
   m_ObjectHideFlags: 1

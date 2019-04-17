@@ -17,7 +17,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
 
     private Vector3 clickPosition;
     private bool timedDestroyIsOn = true, isAnimTypeRandom, isAnimSpeedRandom;
-    private float size = 0.5f;
+    private float size = 1.0f;
 
     private Vector3 lastClickPosition = Vector3.zero;
     public Text lifeTime;
