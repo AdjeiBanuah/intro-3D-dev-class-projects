@@ -16,13 +16,13 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
     private float distance = 5f, distanceChange;
 
     private Vector3 clickPosition;
-    private bool timedDestroyIsOn = true, isAnimTypeRandom, isAnimSpeedRandom, isSpawnTypeRandom, isSpawnTimeRandom;
+    private bool timedDestroyIsOn = true, isAnimTypeRandom = true, isAnimSpeedRandom = true, isSpawnTypeRandom = true, isSpawnTimeRandom = true;
     private float size = 1.0f;
 
     private Vector3 lastClickPosition = Vector3.zero;
     public Text lifeTime;
 
-    public GameObject paintedObject00, paintedObject01, paintedObject02, explosion;
+    public GameObject paintedObject00, paintedObject01, paintedObject02, explosion, mousePointer;
     private Color paintedObjectColor, paintedObjectEmission;
 
     [SerializeField]
@@ -98,10 +98,12 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
         //else UI is hidden Xcutoff = 0f
 
         //NEW Got rid of mousePosition check since moved paint stroke behind UI
+        //mousePointer.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + new Vector3(0f, 0f, distance));
         if (Input.GetMouseButton(0) && (EventSystem.current.currentSelectedGameObject == null) && Input.mousePosition.x > Xcutoff) //left hold
         {
             
             clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition + new Vector3(0f, 0f, distance));
+            
 
             if(isSpawnTypeRandom)
             {

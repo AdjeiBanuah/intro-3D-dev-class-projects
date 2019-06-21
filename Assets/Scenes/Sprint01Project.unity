@@ -2360,8 +2360,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 70, y: -46}
-  m_SizeDelta: {x: 120.3, y: 86.16998}
+  m_AnchoredPosition: {x: 139, y: -46}
+  m_SizeDelta: {x: 252.4, y: 86.16998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1022803264
 MonoBehaviour:
@@ -2399,11 +2399,9 @@ MonoBehaviour:
 
     Eric Nersesian
 
-    IT201 Section xxx
+    Left click to paint
 
-    Right click to paint
-
-    Left click to erase'
+    Right click to erase'
 --- !u!222 &1022803265
 CanvasRenderer:
   m_ObjectHideFlags: 0
