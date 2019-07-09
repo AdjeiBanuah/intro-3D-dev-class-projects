@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.43067226, g: 0.4874574, b: 0.5027659, a: 1}
+  m_IndirectSpecularColor: {r: 0.44089517, g: 0.518845, b: 0.59081095, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4392,19 +4392,19 @@ MonoBehaviour:
   greenAmount: {fileID: 1428518021}
   sizeAmount: {fileID: 0}
   timerAmount: {fileID: 830944647}
-  animAmount: {fileID: 0}
+  animAmount: {fileID: 1072486119}
   distance: 5
   distanceChange: 0
   lifeTime: {fileID: 0}
-  paintedObject00: {fileID: 1923179002989884, guid: a58623d0724a4484f870065a5d6fbce4,
+  paintedObject00: {fileID: 1736976164041638, guid: 1272595d3cc84204abb431a91232e3d7,
     type: 2}
-  paintedObject01: {fileID: 1062313509409930, guid: 6a107284276846348b7d18296ca46bc1,
+  paintedObject01: {fileID: 1062313509409930, guid: e402ca77c66d14b4fbeb955d5b3fd662,
     type: 2}
-  paintedObject02: {fileID: 1049520274572016, guid: 7853b6a20a3d31a46bd1dae6ecfa5be7,
+  paintedObject02: {fileID: 1337708733281170, guid: 0aaec3fc705869f48a98d345d382b404,
     type: 2}
   explosion: {fileID: 1244204695245676, guid: 891db6d174a9f4a40a48212ebfeb62e7, type: 2}
   emissionStrength: 0.5
-  animDropDown: {fileID: 0}
+  animDropDown: {fileID: 1506413002}
 --- !u!1 &1172823817
 GameObject:
   m_ObjectHideFlags: 0
@@ -8182,14 +8182,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1781950470}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: -0.9415064, y: 0.21625836, z: 0.05295964, w: -0.25296918}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 517300618}
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -206.965, y: 13.570999, z: 29.14}
 --- !u!1 &1783531673
 GameObject:
   m_ObjectHideFlags: 0

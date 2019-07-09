@@ -34,7 +34,7 @@ public class ClickPositionManager_Sprint01 : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0) || Input.GetMouseButton(0)) //right click or hold
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButton(0)) //left click or hold
         {
             clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition + new Vector3(0f, 0f, distance));
 

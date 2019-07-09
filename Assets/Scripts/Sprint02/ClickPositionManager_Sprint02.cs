@@ -16,7 +16,7 @@ public class ClickPositionManager_Sprint02 : MonoBehaviour
     private float distance = 5f, distanceChange;
 
     private Vector3 clickPosition;
-    private bool timedDestroyIsOn = true, isAnimTypeRandom = true, isAnimSpeedRandom = true, isSpawnTypeRandom = true, isSpawnTimeRandom = true;
+    private bool timedDestroyIsOn = true, isAnimTypeRandom = true, isAnimSpeedRandom = true, isSpawnTypeRandom = false, isSpawnTimeRandom = false;
     private float size = 1.0f;
 
     private Vector3 lastClickPosition = Vector3.zero;
